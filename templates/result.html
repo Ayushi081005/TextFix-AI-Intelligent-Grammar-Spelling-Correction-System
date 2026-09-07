@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Analysis Result | TextFix AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/result.css') }}">
+
+    <style>
+
+        /* =====================================================
+           WRITING QUALITY
+           ===================================================== */
+
+        .quality-section {
+            margin-top: 40px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            margin: 0 0 6px 0;
+        }
+
+        .section-title p {
+            margin: 0;
+            color: #777783;
+            font-size: 14px;
+        }
+
+        .quality-main-card {
+
+            background: white;
+
+            border: 1px solid #e8e8ef;
+
+            border-radius: 18px;
+
+            padding: 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 35px;
+
+            margin-bottom: 18px;
+        }
+
+        .quality-score-circle {
+
+            width: 130px;
+            height: 130px;
+
+            min-width: 130px;
+
+            border-radius: 50%;
+
+            background: #f3f1ff;
+
+            border: 8px solid #635bff;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        .quality-score-number {
+
+            font-size: 34px;
+
+            font-weight: 800;
+
+            color: #17171c;
+
+            line-height: 1;
+        }
+
+        .quality-score-label {
+
+            font-size: 12px;
+
+            color: #777783;
+
+            margin-top: 5px;
+        }
+
+        .quality-description h3 {
+
+            margin: 0 0 8px 0;
+
+            font-size: 24px;
+        }
+
+        .quality-description p {
+
+            margin: 0;
+
+            color: #777783;
+
+            line-height: 1.6;
+        }
+
+        .quality-metrics {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+        }
+
+        .quality-metric {
+
+            background: white;
+
+            border: 1px solid #e8e8ef;
+
+            border-radius: 14px;
+
+            padding: 22px;
+        }
+
+        .metric-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 14px;
+        }
+
+        .metric-name {
+
+            font-size: 14px;
+
+            color: #555560;
+
+            font-weight: 600;
+        }
+
+        .metric-score {
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            color: #17171c;
+        }
+
+        .metric-bar {
+
+            width: 100%;
+
+            height: 8px;
+
+            background: #eeeeF4;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .metric-fill {
+
+            height: 100%;
+
+            width: var(--score);
+
+            background: #635bff;
+
+            border-radius: 20px;
+
+        }
+
+
+        /* =====================================================
+           WRITING ANALYTICS
+           ===================================================== */
+
+        .analytics-section {
+
+            margin-top: 40px;
+
+        }
+
+        .analytics-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+
+        }
+
+        .analytics-card {
+
+            background: white;
+
+            border: 1px solid #e8e8ef;
+
+            border-radius: 14px;
+
+            padding: 24px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .analytics-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(0, 0, 0, 0.06);
+        }
+
+        .analytics-icon {
+
+            width: 38px;
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #f3f1ff;
+
+            color: #635bff;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+        .analytics-number {
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+            color: #17171c;
+        }
+
+        .analytics-label {
+
+            font-size: 13px;
+
+            color: #777783;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .quality-metrics {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+            .analytics-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .quality-main-card {
+
+                flex-direction: column;
+
+                text-align: center;
+
+            }
+
+            .quality-metrics {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .analytics-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVIGATION
+     ========================================================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <span>✦</span>
+
+        TextFix AI
+
+    </div>
+
+
+    <a href="{{ url_for('index') }}">
+
+        ← New Analysis
+
+    </a>
+
+</nav>
+
+
+
+<!-- =========================================================
+     MAIN CONTENT
+     ========================================================= -->
+
+<main class="results-container">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="result-header">
+
+        <div>
+
+            <span class="badge">
+
+                ✓ ANALYSIS COMPLETE
+
+            </span>
+
+
+            <h1>
+
+                Your text has been analyzed.
+
+            </h1>
+
+
+            <p>
+
+                Review the corrections and improve your writing.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         BASIC ERROR STATISTICS
+         ===================================================== -->
+
+    <section class="stats">
+
+
+        <div class="stat-card">
+
+            <span class="stat-number">
+
+                {{ total_errors }}
+
+            </span>
+
+            <span class="stat-label">
+
+                Total Issues
+
+            </span>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <span class="stat-number">
+
+                {{ spelling_errors }}
+
+            </span>
+
+            <span class="stat-label">
+
+                Spelling
+
+            </span>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <span class="stat-number">
+
+                {{ grammar_errors }}
+
+            </span>
+
+            <span class="stat-label">
+
+                Grammar
+
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         WRITING QUALITY
+         ===================================================== -->
+
+    <section class="quality-section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Writing Quality
+
+                </h2>
+
+                <p>
+
+                    A quick overview of the quality and readability
+                    of your writing.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- OVERALL SCORE -->
+
+        <div class="quality-main-card">
+
+
+            <div class="quality-score-circle">
+
+                <span class="quality-score-number">
+
+                    {{ overall_score }}
+
+                </span>
+
+                <span class="quality-score-label">
+
+                    / 100
+
+                </span>
+
+            </div>
+
+
+
+            <div class="quality-description">
+
+                <h3>
+
+                    {{ quality_label }}
+
+                </h3>
+
+                <p>
+
+                    Your writing has been evaluated using
+                    readability, spelling accuracy, grammar
+                    accuracy, and sentence clarity.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- INDIVIDUAL METRICS -->
+
+        <div class="quality-metrics">
+
+
+            <!-- READABILITY -->
+
+            <div class="quality-metric">
+
+                <div class="metric-top">
+
+                    <span class="metric-name">
+
+                        Readability
+
+                    </span>
+
+                    <span class="metric-score">
+
+                        {{ readability_score }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="metric-bar">
+
+                    <div
+                        class="metric-fill"
+                        style="--score: {{ readability_score }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SPELLING -->
+
+            <div class="quality-metric">
+
+                <div class="metric-top">
+
+                    <span class="metric-name">
+
+                        Spelling Accuracy
+
+                    </span>
+
+                    <span class="metric-score">
+
+                        {{ spelling_accuracy }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="metric-bar">
+
+                    <div
+                        class="metric-fill"
+                        style="--score: {{ spelling_accuracy }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- GRAMMAR -->
+
+            <div class="quality-metric">
+
+                <div class="metric-top">
+
+                    <span class="metric-name">
+
+                        Grammar Accuracy
+
+                    </span>
+
+                    <span class="metric-score">
+
+                        {{ grammar_accuracy }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="metric-bar">
+
+                    <div
+                        class="metric-fill"
+                        style="--score: {{ grammar_accuracy }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SENTENCE CLARITY -->
+
+            <div class="quality-metric">
+
+                <div class="metric-top">
+
+                    <span class="metric-name">
+
+                        Sentence Clarity
+
+                    </span>
+
+                    <span class="metric-score">
+
+                        {{ sentence_clarity }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="metric-bar">
+
+                    <div
+                        class="metric-fill"
+                        style="--score: {{ sentence_clarity }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         TEXT COMPARISON
+         ===================================================== -->
+
+    <section class="comparison">
+
+
+        <!-- ORIGINAL TEXT -->
+
+        <div class="text-panel">
+
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+
+                        Original Text
+
+                    </h2>
+
+                    <span class="panel-hint">
+
+                        Click highlighted text to view the issue
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="text-content original-text"
+                id="originalText">
+
+                {{ original_text }}
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- CORRECTED TEXT -->
+
+        <div class="text-panel corrected">
+
+
+            <div class="panel-header">
+
+
+                <div>
+
+                    <h2>
+
+                        Corrected Text
+
+                    </h2>
+
+                    <span class="panel-hint">
+
+                        You can edit the corrected text
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="corrected-actions">
+
+
+                    <button
+                        id="applyAllButton"
+                        type="button"
+                        class="apply-all-btn">
+
+                        ✨ Apply All
+
+                    </button>
+
+
+                    <button
+                        id="copyButton"
+                        type="button">
+
+                        Copy
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div
+                class="text-content corrected-text"
+                id="correctedText"
+                contenteditable="true"
+                spellcheck="false">
+
+                {{ corrected_text }}
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         WRITING ANALYTICS
+         ===================================================== -->
+
+    <section class="analytics-section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Writing Analytics
+
+                </h2>
+
+                <p>
+
+                    Understand the structure of your writing.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="analytics-grid">
+
+
+            <!-- WORDS -->
+
+            <div class="analytics-card">
+
+                <div class="analytics-icon">
+
+                    Aa
+
+                </div>
+
+                <div class="analytics-number">
+
+                    {{ word_count }}
+
+                </div>
+
+                <div class="analytics-label">
+
+                    Words
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SENTENCES -->
+
+            <div class="analytics-card">
+
+                <div class="analytics-icon">
+
+                    ¶
+
+                </div>
+
+                <div class="analytics-number">
+
+                    {{ sentence_count }}
+
+                </div>
+
+                <div class="analytics-label">
+
+                    Sentences
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CHARACTERS -->
+
+            <div class="analytics-card">
+
+                <div class="analytics-icon">
+
+                    #
+
+                </div>
+
+                <div class="analytics-number">
+
+                    {{ character_count }}
+
+                </div>
+
+                <div class="analytics-label">
+
+                    Characters
+
+                </div>
+
+            </div>
+
+
+
+            <!-- AVERAGE SENTENCE LENGTH -->
+
+            <div class="analytics-card">
+
+                <div class="analytics-icon">
+
+                    ≈
+
+                </div>
+
+                <div class="analytics-number">
+
+                    {{ avg_words_per_sentence }}
+
+                </div>
+
+                <div class="analytics-label">
+
+                    Avg. Words / Sentence
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         DETECTED ISSUES
+         ===================================================== -->
+
+    {% if errors %}
+
+    <section class="errors-section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Detected Issues
+
+                </h2>
+
+                <p>
+
+                    Click an issue to inspect the correction.
+
+                </p>
+
+            </div>
+
+
+            <span>
+
+                {{ total_errors }} issues found
+
+            </span>
+
+        </div>
+
+
+
+        <div class="error-list">
+
+
+            {% for error in errors %}
+
+            <div
+                class="error-item issue-card"
+                data-error-id="{{ error.id }}">
+
+
+                <div class="error-number">
+
+                    {{ loop.index }}
+
+                </div>
+
+
+
+                <div class="error-details">
+
+                    <strong>
+
+                        {{ error.message }}
+
+                    </strong>
+
+
+                    <span class="error-type">
+
+                        {% if error.category == "TYPOS" %}
+
+                            SPELLING
+
+                        {% else %}
+
+                            GRAMMAR
+
+                        {% endif %}
+
+                    </span>
+
+
+                    {% if error.suggestions %}
+
+                    <p>
+
+                        Suggested:
+
+                        <strong>
+
+                            {{ error.suggestions[0] }}
+
+                        </strong>
+
+                    </p>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <div class="issue-arrow">
+
+                    →
+
+                </div>
+
+
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+    </section>
+
+
+    {% else %}
+
+
+    <!-- NO ERRORS -->
+
+    <section class="success-message">
+
+        <div>
+
+            ✓
+
+        </div>
+
+        <h2>
+
+            No issues detected!
+
+        </h2>
+
+        <p>
+
+            Your text looks great.
+
+        </p>
+
+    </section>
+
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         ACTION BUTTONS
+         ===================================================== -->
+
+    <div class="actions">
+
+
+        <a
+            href="{{ url_for('index') }}"
+            class="secondary-btn">
+
+            Check Another Text
+
+        </a>
+
+
+        <button
+            id="copyButtonBottom"
+            class="primary-btn"
+            type="button">
+
+            Copy Corrected Text
+
+        </button>
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     ERROR POPUP
+     ========================================================= -->
+
+<div
+    id="errorPopup"
+    class="error-popup">
+
+
+    <button
+        id="closePopup"
+        class="close-popup"
+        type="button">
+
+        ×
+
+    </button>
+
+
+    <span
+        id="popupCategory"
+        class="popup-category">
+
+        GRAMMAR
+
+    </span>
+
+
+    <h3 id="popupMessage">
+
+        Grammar issue
+
+    </h3>
+
+
+    <div class="popup-original">
+
+        <span>
+
+            Detected:
+
+        </span>
+
+        <strong id="popupOriginal">
+
+            —
+
+        </strong>
+
+    </div>
+
+
+    <p class="suggestion-label">
+
+        Suggested corrections
+
+    </p>
+
+
+    <div
+        id="popupSuggestions"
+        class="popup-suggestions">
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     DATA FOR JAVASCRIPT
+     ========================================================= -->
+
+<script
+    id="textfix-data"
+    type="application/json">
+
+{
+    "originalText": {{ original_text | tojson }},
+    "errors": {{ errors | tojson }}
+}
+
+</script>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* =====================================================
+           GET DATA
+           ===================================================== */
+
+        const dataElement =
+            document.getElementById(
+                "textfix-data"
+            );
+
+
+        const textfixData =
+            JSON.parse(
+                dataElement.textContent
+            );
+
+
+        let originalText =
+            textfixData.originalText;
+
+
+        let errors =
+            textfixData.errors || [];
+
+
+
+        /* =====================================================
+           ELEMENTS
+           ===================================================== */
+
+        const originalTextElement =
+            document.getElementById(
+                "originalText"
+            );
+
+
+        const correctedTextElement =
+            document.getElementById(
+                "correctedText"
+            );
+
+
+        const copyButton =
+            document.getElementById(
+                "copyButton"
+            );
+
+
+        const copyButtonBottom =
+            document.getElementById(
+                "copyButtonBottom"
+            );
+
+
+        const applyAllButton =
+            document.getElementById(
+                "applyAllButton"
+            );
+
+
+        const errorPopup =
+            document.getElementById(
+                "errorPopup"
+            );
+
+
+        const closePopup =
+            document.getElementById(
+                "closePopup"
+            );
+
+
+        const popupCategory =
+            document.getElementById(
+                "popupCategory"
+            );
+
+
+        const popupMessage =
+            document.getElementById(
+                "popupMessage"
+            );
+
+
+        const popupOriginal =
+            document.getElementById(
+                "popupOriginal"
+            );
+
+
+        const popupSuggestions =
+            document.getElementById(
+                "popupSuggestions"
+            );
+
+
+
+        /* =====================================================
+           ESCAPE HTML
+           ===================================================== */
+
+        function escapeHTML(text) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.textContent = text;
+
+            return div.innerHTML;
+        }
+
+
+
+        /* =====================================================
+           HIGHLIGHT ERRORS
+           ===================================================== */
+
+        function highlightErrors(
+            text,
+            errorList
+        ) {
+
+            if (
+                !errorList ||
+                errorList.length === 0
+            ) {
+
+                return escapeHTML(text);
+
+            }
+
+
+            const sortedErrors =
+                [...errorList].sort(
+                    function (a, b) {
+
+                        return (
+                            a.offset -
+                            b.offset
+                        );
+
+                    }
+                );
+
+
+            let result = "";
+
+            let currentPosition = 0;
+
+
+            sortedErrors.forEach(
+                function (error) {
+
+                    const start =
+                        error.offset;
+
+
+                    const end =
+                        start +
+                        error.length;
+
+
+                    if (
+                        start <
+                        currentPosition
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    result +=
+                        escapeHTML(
+                            text.substring(
+                                currentPosition,
+                                start
+                            )
+                        );
+
+
+                    const incorrectText =
+                        text.substring(
+                            start,
+                            end
+                        );
+
+
+                    result +=
+                        '<span class="text-error" ' +
+                        'data-error-id="' +
+                        error.id +
+                        '">' +
+                        escapeHTML(
+                            incorrectText
+                        ) +
+                        '</span>';
+
+
+                    currentPosition =
+                        end;
+
+                }
+            );
+
+
+            result +=
+                escapeHTML(
+                    text.substring(
+                        currentPosition
+                    )
+                );
+
+
+            return result;
+
+        }
+
+
+
+        /* =====================================================
+           UPDATE ORIGINAL TEXT
+           ===================================================== */
+
+        function updateOriginalText() {
+
+            originalTextElement.innerHTML =
+                highlightErrors(
+                    originalText,
+                    errors
+                );
+
+        }
+
+
+
+        /* =====================================================
+           OPEN ERROR POPUP
+           ===================================================== */
+
+        function openPopup(error) {
+
+            if (!error) {
+
+                return;
+
+            }
+
+
+            if (
+                error.category === "TYPOS"
+            ) {
+
+                popupCategory.textContent =
+                    "SPELLING";
+
+            } else {
+
+                popupCategory.textContent =
+                    "GRAMMAR";
+
+            }
+
+
+            popupMessage.textContent =
+                error.message;
+
+
+            const incorrectText =
+                originalText.substring(
+                    error.offset,
+                    error.offset +
+                    error.length
+                );
+
+
+            popupOriginal.textContent =
+                '"' +
+                incorrectText +
+                '"';
+
+
+            popupSuggestions.innerHTML =
+                "";
+
+
+            if (
+                !error.suggestions ||
+                error.suggestions.length === 0
+            ) {
+
+                const message =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                message.className =
+                    "no-suggestion";
+
+
+                message.textContent =
+                    "No automatic suggestion available.";
+
+
+                popupSuggestions.appendChild(
+                    message
+                );
+
+            }
+
+            else {
+
+                error.suggestions.forEach(
+                    function (suggestion) {
+
+                        const button =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        button.type =
+                            "button";
+
+
+                        button.className =
+                            "suggestion-button";
+
+
+                        button.textContent =
+                            suggestion;
+
+
+                        button.addEventListener(
+                            "click",
+                            function () {
+
+                                applyCorrection(
+                                    error,
+                                    suggestion
+                                );
+
+                            }
+                        );
+
+
+                        popupSuggestions.appendChild(
+                            button
+                        );
+
+                    }
+                );
+
+            }
+
+
+            errorPopup.classList.add(
+                "show"
+            );
+
+        }
+
+
+
+        /* =====================================================
+           APPLY ONE CORRECTION
+           ===================================================== */
+
+        function applyCorrection(
+            error,
+            replacement
+        ) {
+
+            const start =
+                error.offset;
+
+
+            const end =
+                start +
+                error.length;
+
+
+            originalText =
+                originalText.substring(
+                    0,
+                    start
+                ) +
+                replacement +
+                originalText.substring(
+                    end
+                );
+
+
+            errors =
+                errors.filter(
+                    function (item) {
+
+                        return (
+                            item.id !==
+                            error.id
+                        );
+
+                    }
+                );
+
+
+            const difference =
+                replacement.length -
+                error.length;
+
+
+            errors.forEach(
+                function (item) {
+
+                    if (
+                        item.offset >
+                        start
+                    ) {
+
+                        item.offset +=
+                            difference;
+
+                    }
+
+                }
+            );
+
+
+            updateOriginalText();
+
+            updateCorrectedText();
+
+            updateStatistics();
+
+            updateErrorList();
+
+
+            errorPopup.classList.remove(
+                "show"
+            );
+
+        }
+
+
+
+        /* =====================================================
+           UPDATE CORRECTED TEXT
+           ===================================================== */
+
+        function updateCorrectedText() {
+
+            correctedTextElement.textContent =
+                originalText;
+
+        }
+
+
+
+        /* =====================================================
+           UPDATE ERROR STATISTICS
+           ===================================================== */
+
+        function updateStatistics() {
+
+            const totalIssues =
+                document.querySelector(
+                    ".stats .stat-card:nth-child(1) .stat-number"
+                );
+
+
+            const spellingIssues =
+                document.querySelector(
+                    ".stats .stat-card:nth-child(2) .stat-number"
+                );
+
+
+            const grammarIssues =
+                document.querySelector(
+                    ".stats .stat-card:nth-child(3) .stat-number"
+                );
+
+
+            const spellingCount =
+                errors.filter(
+                    function (error) {
+
+                        return (
+                            error.category ===
+                            "TYPOS"
+                        );
+
+                    }
+                ).length;
+
+
+            const grammarCount =
+                errors.length -
+                spellingCount;
+
+
+            if (totalIssues) {
+
+                totalIssues.textContent =
+                    errors.length;
+
+            }
+
+
+            if (spellingIssues) {
+
+                spellingIssues.textContent =
+                    spellingCount;
+
+            }
+
+
+            if (grammarIssues) {
+
+                grammarIssues.textContent =
+                    grammarCount;
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           UPDATE ERROR LIST
+           ===================================================== */
+
+        function updateErrorList() {
+
+            const errorList =
+                document.querySelector(
+                    ".error-list"
+                );
+
+
+            if (!errorList) {
+
+                return;
+
+            }
+
+
+            errorList.innerHTML =
+                "";
+
+
+            errors.forEach(
+                function (error, index) {
+
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "error-item issue-card";
+
+
+                    card.dataset.errorId =
+                        error.id;
+
+
+
+                    const errorNumber =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    errorNumber.className =
+                        "error-number";
+
+
+                    errorNumber.textContent =
+                        index + 1;
+
+
+
+                    const details =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    details.className =
+                        "error-details";
+
+
+
+                    const message =
+                        document.createElement(
+                            "strong"
+                        );
+
+
+                    message.textContent =
+                        error.message;
+
+
+
+                    const type =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    type.className =
+                        "error-type";
+
+
+                    type.textContent =
+                        error.category ===
+                        "TYPOS"
+                            ? "SPELLING"
+                            : "GRAMMAR";
+
+
+
+                    details.appendChild(
+                        message
+                    );
+
+
+                    details.appendChild(
+                        type
+                    );
+
+
+
+                    if (
+                        error.suggestions &&
+                        error.suggestions.length
+                    ) {
+
+                        const suggestion =
+                            document.createElement(
+                                "p"
+                            );
+
+
+                        suggestion.textContent =
+                            "Suggested: ";
+
+
+                        const suggestionStrong =
+                            document.createElement(
+                                "strong"
+                            );
+
+
+                        suggestionStrong.textContent =
+                            error.suggestions[0];
+
+
+                        suggestion.appendChild(
+                            suggestionStrong
+                        );
+
+
+                        details.appendChild(
+                            suggestion
+                        );
+
+                    }
+
+
+
+                    const arrow =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    arrow.className =
+                        "issue-arrow";
+
+
+                    arrow.textContent =
+                        "→";
+
+
+
+                    card.appendChild(
+                        errorNumber
+                    );
+
+
+                    card.appendChild(
+                        details
+                    );
+
+
+                    card.appendChild(
+                        arrow
+                    );
+
+
+
+                    card.addEventListener(
+                        "click",
+                        function () {
+
+                            openPopup(
+                                error
+                            );
+
+                        }
+                    );
+
+
+                    errorList.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+
+            if (
+                errors.length === 0
+            ) {
+
+                errorList.innerHTML = `
+                    <div class="all-corrected">
+                        ✓ All detected issues
+                        have been corrected!
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           HIGHLIGHT CLICK
+           ===================================================== */
+
+        originalTextElement.addEventListener(
+            "click",
+            function (event) {
+
+                const target =
+                    event.target.closest(
+                        ".text-error"
+                    );
+
+
+                if (!target) {
+
+                    return;
+
+                }
+
+
+                const errorId =
+                    Number(
+                        target.dataset.errorId
+                    );
+
+
+                const error =
+                    errors.find(
+                        function (item) {
+
+                            return (
+                                item.id ===
+                                errorId
+                            );
+
+                        }
+                    );
+
+
+                openPopup(error);
+
+            }
+        );
+
+
+
+        /* =====================================================
+           CLOSE POPUP
+           ===================================================== */
+
+        closePopup.addEventListener(
+            "click",
+            function () {
+
+                errorPopup.classList.remove(
+                    "show"
+                );
+
+            }
+        );
+
+
+
+        /* =====================================================
+           APPLY ALL CORRECTIONS
+           ===================================================== */
+
+        function applyAllCorrections() {
+
+            if (
+                !errors ||
+                errors.length === 0
+            ) {
+
+                alert(
+                    "There are no remaining corrections."
+                );
+
+                return;
+
+            }
+
+
+            const sortedErrors =
+                [...errors]
+                    .sort(
+                        function (a, b) {
+
+                            return (
+                                b.offset -
+                                a.offset
+                            );
+
+                        }
+                    );
+
+
+            sortedErrors.forEach(
+                function (error) {
+
+                    if (
+                        !error.suggestions ||
+                        error.suggestions.length === 0
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const replacement =
+                        error.suggestions[0];
+
+
+                    const start =
+                        error.offset;
+
+
+                    const end =
+                        start +
+                        error.length;
+
+
+                    originalText =
+                        originalText.substring(
+                            0,
+                            start
+                        ) +
+                        replacement +
+                        originalText.substring(
+                            end
+                        );
+
+                }
+            );
+
+
+            errors = [];
+
+
+            originalTextElement.textContent =
+                originalText;
+
+
+            correctedTextElement.textContent =
+                originalText;
+
+
+            updateStatistics();
+
+            updateErrorList();
+
+
+            errorPopup.classList.remove(
+                "show"
+            );
+
+
+            applyAllButton.textContent =
+                "✓ All Applied";
+
+
+            applyAllButton.disabled =
+                true;
+
+        }
+
+
+
+        /* =====================================================
+           TRACK MANUAL EDITS
+           ===================================================== */
+
+        correctedTextElement.addEventListener(
+            "input",
+            function () {
+
+                originalText =
+                    correctedTextElement.innerText;
+
+            }
+        );
+
+
+
+        /* =====================================================
+           COPY CORRECTED TEXT
+           ===================================================== */
+
+        function copyCorrectedText() {
+
+            const text =
+                correctedTextElement.innerText;
+
+
+            navigator.clipboard
+                .writeText(text)
+                .then(
+                    function () {
+
+                        alert(
+                            "Corrected text copied!"
+                        );
+
+                    }
+                )
+                .catch(
+                    function () {
+
+                        alert(
+                            "Unable to copy text."
+                        );
+
+                    }
+                );
+
+        }
+
+
+
+        /* =====================================================
+           BUTTON EVENTS
+           ===================================================== */
+
+        if (applyAllButton) {
+
+            applyAllButton.addEventListener(
+                "click",
+                applyAllCorrections
+            );
+
+        }
+
+
+        if (copyButton) {
+
+            copyButton.addEventListener(
+                "click",
+                copyCorrectedText
+            );
+
+        }
+
+
+        if (copyButtonBottom) {
+
+            copyButtonBottom.addEventListener(
+                "click",
+                copyCorrectedText
+            );
+
+        }
+
+
+
+        /* =====================================================
+           ESCAPE KEY
+           ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    errorPopup.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           INITIAL RENDER
+           ===================================================== */
+
+        updateOriginalText();
+
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

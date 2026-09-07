@@ -1,0 +1,600 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --background: #f7f8fc;
+    --surface: #ffffff;
+    --text: #171923;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --primary: #635bff;
+    --soft-primary: #efedff;
+    --success: #22c55e;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+
+/* NAVBAR */
+
+.navbar {
+    height: 72px;
+    padding: 0 7%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: white;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+.navbar a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+
+/* MAIN */
+
+.results-container {
+    width: 90%;
+    max-width: 1100px;
+
+    margin: 70px auto;
+}
+
+
+/* HEADER */
+
+.badge {
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    background: var(--soft-primary);
+    color: var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.result-header h1 {
+    font-size: 42px;
+    margin: 18px 0 8px;
+    letter-spacing: -1px;
+}
+
+.result-header p {
+    color: var(--muted);
+}
+
+
+/* STATISTICS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin: 45px 0 25px;
+}
+
+.stat-card {
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.stat-label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+
+/* COMPARISON */
+
+.comparison {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+.text-panel {
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.panel-header {
+    padding: 18px 20px;
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-header h2 {
+    font-size: 16px;
+}
+
+.panel-header button {
+    border: none;
+
+    background: var(--soft-primary);
+    color: var(--primary);
+
+    padding: 7px 12px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+}
+
+.text-content {
+    padding: 22px;
+
+    min-height: 250px;
+
+    white-space: pre-wrap;
+
+    line-height: 1.8;
+
+    color: #4b5563;
+}
+
+.corrected-text {
+    color: var(--text);
+}
+
+
+/* ERRORS */
+
+.errors-section {
+    margin-top: 35px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 25px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.section-title h2 {
+    font-size: 19px;
+}
+
+.section-title span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.error-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.error-item {
+    display: flex;
+
+    gap: 15px;
+
+    padding: 15px;
+
+    background: #fafafa;
+
+    border-radius: 10px;
+}
+
+.error-number {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background: var(--soft-primary);
+    color: var(--primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.error-details strong {
+    font-size: 14px;
+}
+
+.error-details p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+
+/* SUCCESS */
+
+.success-message {
+    margin-top: 35px;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 45px;
+}
+
+.success-message div {
+    font-size: 35px;
+    color: var(--success);
+}
+
+.success-message h2 {
+    margin: 10px 0 5px;
+}
+
+.success-message p {
+    color: var(--muted);
+}
+
+
+/* BUTTONS */
+
+.actions {
+    margin-top: 30px;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+}
+
+.primary-btn,
+.secondary-btn {
+    padding: 12px 20px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.primary-btn {
+    border: none;
+
+    background: var(--primary);
+
+    color: white;
+}
+
+.secondary-btn {
+    border: 1px solid var(--border);
+
+    background: white;
+
+    color: var(--text);
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 750px) {
+
+    .comparison {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .result-header h1 {
+        font-size: 32px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        text-align: center;
+        width: 100%;
+    }
+
+}
+/* =========================================
+   CORRECTED TEXT ACTIONS
+   ========================================= */
+
+.corrected-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* =========================================
+   APPLY ALL BUTTON
+   ========================================= */
+
+.apply-all-btn {
+    border: 1px solid #d8d5ff;
+
+    background: #f5f3ff;
+
+    color: #635bff;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.apply-all-btn:hover {
+    background: #635bff;
+
+    color: white;
+
+    transform: translateY(-1px);
+}
+
+
+.apply-all-btn:disabled {
+    opacity: 0.7;
+
+    cursor: default;
+
+    transform: none;
+}
+
+
+/* =========================================
+   EDITABLE CORRECTED TEXT
+   ========================================= */
+
+.corrected-text[contenteditable="true"] {
+    outline: none;
+
+    cursor: text;
+}
+
+
+.corrected-text[contenteditable="true"]:focus {
+    box-shadow:
+        inset 0 0 0 2px #e9e7ff;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .corrected-actions {
+        flex-wrap: wrap;
+    }
+
+}
+/* =========================================
+   WRITING ANALYTICS
+   ========================================= */
+
+.analytics-section {
+    margin-top: 40px;
+}
+
+
+.analytics-section .section-title {
+    margin-bottom: 20px;
+}
+
+
+.analytics-section .section-title h2 {
+    margin-bottom: 6px;
+}
+
+
+.analytics-section .section-title p {
+    margin: 0;
+
+    color: #777783;
+
+    font-size: 14px;
+}
+
+
+.analytics-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 16px;
+
+}
+
+
+.analytics-card {
+
+    background: white;
+
+    border: 1px solid #e8e8ef;
+
+    border-radius: 14px;
+
+    padding: 24px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.analytics-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 0, 0, 0.06);
+
+}
+
+
+.analytics-icon {
+
+    width: 36px;
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #f3f1ff;
+
+    color: #635bff;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+
+}
+
+
+.analytics-number {
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    color: #17171c;
+
+}
+
+
+.analytics-label {
+
+    font-size: 13px;
+
+    color: #777783;
+
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 800px) {
+
+    .analytics-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .analytics-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}

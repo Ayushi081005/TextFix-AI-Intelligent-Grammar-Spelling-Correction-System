@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TextFix AI | Intelligent Text Correction</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/script.js', v='2') }}"
+        defer></script>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+
+        <div class="logo">
+            <span class="logo-icon">✦</span>
+            TextFix <span>AI</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How it works</a>
+        </div>
+
+        <button id="themeToggle" class="theme-btn">
+            🌙
+        </button>
+
+    </nav>
+
+
+    <!-- Hero Section -->
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-badge">
+                ✨ AI-Powered Text Correction
+            </div>
+
+            <h1>
+                Write better.<br>
+                <span>Communicate better.</span>
+            </h1>
+
+            <p>
+                Improve your grammar and spelling with intelligent
+                NLP-powered text analysis.
+            </p>
+
+        </section>
+
+
+        <!-- Editor Section -->
+        <section class="editor-section">
+
+            <div class="editor-card">
+
+                <div class="editor-header">
+
+                    <div>
+                        <h2>Text Analyzer</h2>
+                        <p>Enter text or upload a document</p>
+                    </div>
+
+                    <div class="status">
+                        <span></span>
+                        Ready
+                    </div>
+
+                </div>
+
+
+                <form action="/check"
+                      method="POST"
+                      enctype="multipart/form-data"
+                      id="textForm">
+
+                    <!-- Text Input -->
+                    <div class="textarea-wrapper">
+
+                        <textarea
+                            name="text"
+                            id="text"
+                            placeholder="Start typing or paste your text here..."
+                            maxlength="10000"></textarea>
+
+                        <div class="character-count">
+                            <span id="characterCount">0</span> / 10,000
+                        </div>
+
+                    </div>
+
+
+                    <!-- Upload Area -->
+                    <div class="upload-area">
+
+                        <input
+                            type="file"
+                            name="file"
+                            id="file"
+                            accept=".pdf,.pptx">
+
+                        <div class="upload-icon">
+                            📄
+                        </div>
+
+                        <h3>Upload a document</h3>
+
+                        <p>
+                            Drag & drop or click to browse
+                        </p>
+
+                        <small>
+                            Supported formats: PDF, PPTX
+                        </small>
+
+                        <div id="fileName"></div>
+
+                    </div>
+
+
+                    <!-- Actions -->
+                    <div class="editor-actions">
+
+    <button
+        type="button"
+        id="clearButton"
+        class="secondary-btn">
+        Clear
+    </button>
+
+    <button
+        type="submit"
+        class="analyze-btn">
+        ✨ Analyze Text
+    </button>
+
+    {% if error %}
+        <p id="errorMessage" class="error-message">
+            {{ error }}
+        </p>
+    {% else %}
+        <p id="errorMessage" class="error-message"></p>
+    {% endif %}
+
+</div>
+
+</form>
+
+            </div>
+
+        </section>
+
+
+        <!-- Features -->
+        <section id="features" class="features-section">
+
+            <div class="section-heading">
+
+                <span>POWERFUL FEATURES</span>
+
+                <h2>
+                    Everything you need to
+                    <span>write with confidence.</span>
+                </h2>
+
+            </div>
+
+
+            <div class="feature-grid">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">✓</div>
+
+                    <h3>Smart Spell Check</h3>
+
+                    <p>
+                        Detect spelling mistakes and receive
+                        intelligent correction suggestions.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">Aa</div>
+
+                    <h3>Grammar Correction</h3>
+
+                    <p>
+                        Identify grammatical errors using
+                        transformer-based NLP models.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">↗</div>
+
+                    <h3>Document Support</h3>
+
+                    <p>
+                        Extract and analyze text directly
+                        from PDF and PowerPoint files.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">▣</div>
+
+                    <h3>Text Analytics</h3>
+
+                    <p>
+                        Understand your writing with word,
+                        sentence and error statistics.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="how-section">
+
+            <div class="section-heading">
+
+                <span>HOW IT WORKS</span>
+
+                <h2>
+                    From text to polished writing
+                    <span>in three steps.</span>
+                </h2>
+
+            </div>
+
+
+            <div class="steps">
+
+                <div class="step">
+
+                    <div class="step-number">01</div>
+
+                    <h3>Enter or Upload</h3>
+
+                    <p>
+                        Enter your text or upload a PDF/PPTX
+                        document.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">02</div>
+
+                    <h3>Analyze</h3>
+
+                    <p>
+                        Our NLP pipeline checks spelling,
+                        grammar and text statistics.
+                    </p>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">03</div>
+
+                    <h3>Improve</h3>
+
+                    <p>
+                        Review the corrections and download
+                        your improved document.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            ✦ TextFix AI
+        </div>
+
+        <p>
+            Intelligent text analysis powered by NLP.
+        </p>
+
+        <p class="copyright">
+            © 2026 TextFix AI
+        </p>
+
+    </footer>
+
+</body>
+</html>

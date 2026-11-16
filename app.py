@@ -4,6 +4,7 @@ from flask import Flask, render_template, request
 
 from services.spell_checker import spell_checker
 from services.document_parser import DocumentParser
+from services.summarizer import summarize_text
 
 
 app = Flask(__name__)
@@ -289,225 +290,119 @@ def index():
 @app.route("/check", methods=["POST"])
 def check():
 
-    text = request.form.get(
-        "text",
-        ""
-    ).strip()
+    text = request.form.get("text", "").strip()
+    uploaded_file = request.files.get("file")
 
-    uploaded_file = request.files.get(
-        "file"
-    )
+    analysis_mode = request.form.get("analysis_mode", "grammar")
+    summary_length = request.form.get("summary_length", "medium")
+
+    if analysis_mode not in {"grammar", "summarize", "both"}:
+        analysis_mode = "grammar"
+
+    if summary_length not in {"short", "medium", "long"}:
+        summary_length = "medium"
 
     try:
-
         # ----------------------------------------------------
         # HANDLE FILE UPLOAD
         # ----------------------------------------------------
-
         if uploaded_file and uploaded_file.filename:
-
-            print(
-                f"Processing file: {uploaded_file.filename}"
-            )
-
-            text = DocumentParser.extract_text(
-                uploaded_file
-            )
+            print(f"Processing file: {uploaded_file.filename}")
+            text = DocumentParser.extract_text(uploaded_file)
 
         # ----------------------------------------------------
         # VALIDATE TEXT
         # ----------------------------------------------------
-
         if not text:
-
             return render_template(
                 "index.html",
-                error=(
-                    "Please enter text or upload "
-                    "a valid PDF/PPTX file."
-                )
+                error="Please enter text or upload a valid PDF/PPTX file."
             )
 
-        # ----------------------------------------------------
-        # CALCULATE TEXT STATISTICS
-        # ----------------------------------------------------
-
-        statistics = calculate_text_statistics(
-            text
-        )
-
-        print(
-            f"Words: {statistics['word_count']}"
-        )
-
-        print(
-            f"Sentences: {statistics['sentence_count']}"
-        )
-
-        print(
-            f"Characters: {statistics['character_count']}"
-        )
-
-        print(
-            "Analyzing text..."
-        )
+        statistics = calculate_text_statistics(text)
+        print(f"Words: {statistics['word_count']}")
+        print(f"Sentences: {statistics['sentence_count']}")
+        print(f"Characters: {statistics['character_count']}")
 
         # ----------------------------------------------------
-        # SPELLING + GRAMMAR ANALYSIS
+        # OPTIONAL SUMMARIZATION
         # ----------------------------------------------------
-
-        result = spell_checker.analyze(
-            text
-        )
-
-        # ----------------------------------------------------
-        # WRITING QUALITY ANALYSIS
-        # ----------------------------------------------------
-
-        writing_quality = calculate_writing_quality(
-
-            text=text,
-
-            word_count=statistics[
-                "word_count"
-            ],
-
-            sentence_count=statistics[
-                "sentence_count"
-            ],
-
-            total_errors=result[
-                "total_errors"
-            ],
-
-            spelling_errors=result[
-                "spelling_errors"
-            ],
-
-            grammar_errors=result[
-                "grammar_errors"
-            ]
-        )
-
-        print(
-            "Analysis complete."
-        )
+        summary_result = None
+        if analysis_mode in {"summarize", "both"}:
+            summary_result = summarize_text(text, length=summary_length)
 
         # ----------------------------------------------------
-        # SEND EVERYTHING TO RESULT PAGE
+        # OPTIONAL SPELLING + GRAMMAR ANALYSIS
         # ----------------------------------------------------
+        if analysis_mode in {"grammar", "both"}:
+            result = spell_checker.analyze(text)
+
+            writing_quality = calculate_writing_quality(
+                text=text,
+                word_count=statistics["word_count"],
+                sentence_count=statistics["sentence_count"],
+                total_errors=result["total_errors"],
+                spelling_errors=result["spelling_errors"],
+                grammar_errors=result["grammar_errors"]
+            )
+        else:
+            # These values are not displayed in summarization-only mode.
+            result = {
+                "original_text": text,
+                "corrected_text": text,
+                "errors": [],
+                "total_errors": 0,
+                "spelling_errors": 0,
+                "grammar_errors": 0
+            }
+            writing_quality = {
+                "overall_score": 0,
+                "quality_label": "",
+                "readability_score": 0,
+                "spelling_accuracy": 0,
+                "grammar_accuracy": 0,
+                "sentence_clarity": 0
+            }
+
+        print("Analysis complete.")
 
         return render_template(
-
             "result.html",
+            analysis_mode=analysis_mode,
+            summary_result=summary_result,
+            summary_length=summary_length,
 
-            # -----------------------------------------------
-            # WRITING QUALITY
-            # -----------------------------------------------
+            # Writing quality
+            overall_score=writing_quality["overall_score"],
+            quality_label=writing_quality["quality_label"],
+            readability_score=writing_quality["readability_score"],
+            spelling_accuracy=writing_quality["spelling_accuracy"],
+            grammar_accuracy=writing_quality["grammar_accuracy"],
+            sentence_clarity=writing_quality["sentence_clarity"],
 
-            overall_score=writing_quality[
-                "overall_score"
-            ],
+            # Grammar and spelling data
+            original_text=result["original_text"],
+            corrected_text=result["corrected_text"],
+            errors=result["errors"],
+            total_errors=result["total_errors"],
+            spelling_errors=result["spelling_errors"],
+            grammar_errors=result["grammar_errors"],
 
-            quality_label=writing_quality[
-                "quality_label"
-            ],
-
-            readability_score=writing_quality[
-                "readability_score"
-            ],
-
-            spelling_accuracy=writing_quality[
-                "spelling_accuracy"
-            ],
-
-            grammar_accuracy=writing_quality[
-                "grammar_accuracy"
-            ],
-
-            sentence_clarity=writing_quality[
-                "sentence_clarity"
-            ],
-
-            # -----------------------------------------------
-            # EXISTING ANALYSIS DATA
-            # -----------------------------------------------
-
-            original_text=result[
-                "original_text"
-            ],
-
-            corrected_text=result[
-                "corrected_text"
-            ],
-
-            errors=result[
-                "errors"
-            ],
-
-            total_errors=result[
-                "total_errors"
-            ],
-
-            spelling_errors=result[
-                "spelling_errors"
-            ],
-
-            grammar_errors=result[
-                "grammar_errors"
-            ],
-
-            # -----------------------------------------------
-            # TEXT STATISTICS
-            # -----------------------------------------------
-
-            word_count=statistics[
-                "word_count"
-            ],
-
-            sentence_count=statistics[
-                "sentence_count"
-            ],
-
-            character_count=statistics[
-                "character_count"
-            ],
-
-            avg_words_per_sentence=statistics[
-                "avg_words_per_sentence"
-            ]
+            # Text statistics
+            word_count=statistics["word_count"],
+            sentence_count=statistics["sentence_count"],
+            character_count=statistics["character_count"],
+            avg_words_per_sentence=statistics["avg_words_per_sentence"]
         )
-
-    # ========================================================
-    # INVALID FILE / USER INPUT ERROR
-    # ========================================================
 
     except ValueError as error:
-
-        return render_template(
-            "index.html",
-            error=str(error)
-        )
-
-    # ========================================================
-    # GENERAL ERROR
-    # ========================================================
+        return render_template("index.html", error=str(error))
 
     except Exception as error:
-
-        print(
-            "Processing error:",
-            error
-        )
-
+        print("Processing error:", error)
         return render_template(
-
             "index.html",
-
-            error=(
-                "Something went wrong while "
-                "processing your document."
-            )
+            error="Something went wrong while processing your document."
         )
 
 

@@ -332,6 +332,58 @@
 
         }
 
+    
+        /* =====================================================
+           EXTRACTIVE SUMMARY
+           ===================================================== */
+        .summary-section {
+            margin: 28px 0 36px;
+            padding: 28px;
+            background: white;
+            border: 1px solid #e8e8ef;
+            border-radius: 18px;
+        }
+        .summary-section h2 { margin: 0 0 8px; }
+        .summary-description {
+            color: #777783;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 20px;
+        }
+        .summary-text {
+            padding: 20px;
+            background: #f8f7ff;
+            border: 1px solid #e7e3ff;
+            border-radius: 12px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+        }
+        .summary-stat {
+            padding: 16px;
+            border: 1px solid #e8e8ef;
+            border-radius: 12px;
+        }
+        .summary-stat strong {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        .summary-stat span {
+            color: #777783;
+            font-size: 13px;
+        }
+        @media (max-width: 600px) {
+            .summary-stats { grid-template-columns: 1fr; }
+            .summary-section { padding: 20px; }
+        }
+
     </style>
 
 </head>
@@ -410,7 +462,39 @@
          BASIC ERROR STATISTICS
          ===================================================== -->
 
-    <section class="stats">
+    
+    {% if summary_result %}
+    <section class="summary-section">
+        <h2>Extractive Summary</h2>
+        <p class="summary-description">
+            Important sentences selected from your document using TF-IDF-based sentence ranking.
+            This is an extractive summary, so the selected sentences retain their original wording.
+        </p>
+        <div class="summary-text">{{ summary_result.summary }}</div>
+        <div class="summary-stats">
+            <div class="summary-stat">
+                <strong>{{ summary_result.original_word_count }}</strong>
+                <span>Original words</span>
+            </div>
+            <div class="summary-stat">
+                <strong>{{ summary_result.summary_word_count }}</strong>
+                <span>Summary words</span>
+            </div>
+            <div class="summary-stat">
+                <strong>{{ summary_result.compression_percentage }}%</strong>
+                <span>Compression</span>
+            </div>
+        </div>
+        <p class="summary-description" style="margin-top: 16px; margin-bottom: 0;">
+            Summary length: {{ summary_length|capitalize }} ·
+            {{ summary_result.summary_sentence_count }} of
+            {{ summary_result.original_sentence_count }} sentences selected.
+        </p>
+    </section>
+    {% endif %}
+
+{% if analysis_mode != 'summarize' %}
+<section class="stats">
 
 
         <div class="stat-card">
@@ -1106,7 +1190,9 @@
          ACTION BUTTONS
          ===================================================== -->
 
-    <div class="actions">
+    {% endif %}
+
+<div class="actions">
 
 
         <a
